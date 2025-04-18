@@ -1,3 +1,4 @@
+%define keepstatic 1
 Name:       libxkbcommon
 Version:    1.3.1
 Release:    1
@@ -26,6 +27,12 @@ Requires: %{name} = %{version}-%{release}
 %description devel
 %{summary}.
 
+%package devel-static
+Summary:  X.Org XKB parsing development package
+
+%description devel-static
+%{summary}.
+
 %prep
 %autosetup -p1 -n %{name}-%{version}/upstream
 
@@ -34,7 +41,8 @@ Requires: %{name} = %{version}-%{release}
        -Denable-x11=false \
        -Denable-wayland=false \
        -Denable-xkbregistry=false \
-       -Denable-utils=false
+       -Denable-utils=false \
+       -Ddefault_library=static
 %meson_build
 
 %install
@@ -47,8 +55,9 @@ Requires: %{name} = %{version}-%{release}
 %files
 %defattr(-,root,root,-)
 %license LICENSE
-%{_libdir}/libxkbcommon.so.0
-%{_libdir}/libxkbcommon.so.0.0.0
+#%{_libdir}/libxkbcommon.so.0
+#%{_libdir}/libxkbcommon.so.0.0.0
+#%{_libdir}/*.a
 
 %files devel
 %defattr(-,root,root,-)
@@ -58,5 +67,9 @@ Requires: %{name} = %{version}-%{release}
 %{_includedir}/xkbcommon/xkbcommon-keysyms.h
 %{_includedir}/xkbcommon/xkbcommon-compat.h
 %{_includedir}/xkbcommon/xkbcommon-compose.h
-%{_libdir}/libxkbcommon.so
+#%{_libdir}/libxkbcommon.so
 %{_libdir}/pkgconfig/xkbcommon.pc
+
+%files devel-static
+%defattr(-,root,root,-)
+%{_libdir}/*.a
